@@ -96,9 +96,10 @@
 			<tbody>
 				<%
 				try {
+
 					String url = "jdbc:mysql://localhost:3306/springproject";
 					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection con = DriverManager.getConnection(url, "root", "");
+					Connection con = DriverManager.getConnection(url, "root", "Swisschoc2@");
 					Statement stmt = con.createStatement();
 					ResultSet rs = stmt.executeQuery("select * from categories");
 				%>
