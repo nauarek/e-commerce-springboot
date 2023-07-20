@@ -30,17 +30,16 @@
         </button>
 		
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <h4>Welcome ${ username } </h4>
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}" href="#">Home</a>
+                    <a class="nav-link" href="/index">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="profileDisplay" >Profile</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/shop}" href="#">Shop</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" href="logout">Logout</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" th:href="@{/cart}" href="#">Cart</a>
@@ -49,7 +48,7 @@
                     <span class="nav-link" th:text="${cartCount}">0</span>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="profileDisplay" >Profile</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" href="logout">Logout</a>
                 </li>
             </ul>
 
@@ -58,7 +57,7 @@
 </nav> 
 <header>
 	<div class="overlay">
-<center><h2>fill this form for supplier</h2></center>
+<center><h2>Fill this form for supplier</h2></center>
 <style>
 h2 {
 	font-family: 'Dancing Script', cursive;
@@ -94,7 +93,7 @@ header .overlay{
                 <font size="4">
                     <td width="12%" align="left">
                         <font size="4">
-                            &nbsp;product-name:</font>
+                            &nbsp;Product name:</font>
                     </td>
                     <td width="25%" align="left"><input type="text" name="product Name"></td>
             </tr>
@@ -102,28 +101,28 @@ header .overlay{
                 <font size="4">
                     <td width="15%" align="left">
                         <font size="4">
-                            &nbsp;Contact No. :</font>
+                            &nbsp;Phone No. :</font>
                     </td>
                     <td width="25%" align="left"><input type="text" name="Number" maxlength="10"></td>
             </tr>
             <tr>
                 <td width="15%" align="left">
                     <font size="4">
-                        &nbsp;EMAIL ID:</font>
+                        &nbsp;Email:</font>
                 </td>
                 <td width="25%" align="left"><input type="email" name="Email"> </td>
             </tr>
             <tr>
                 <td width="15%" align="left">
                     <font size="4">
-                        &nbsp;category:</font>
+                        &nbsp;Category:</font>
                 </td>
                 <td width="25%" align="left"><input type="text" name="category"></td>
             </tr>
             <tr>
                 <td width="15%" align="left">
                     <font size="4">
-                        &nbsp;description:</font>
+                        &nbsp;Description:</font>
                 </td>
                 <td width="25%" align="left"><textarea cols="51" rows="4" name="Message"></textarea></td><br>
             </tr>

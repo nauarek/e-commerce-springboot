@@ -20,8 +20,8 @@
         <p>Please fill out this to register</p>
         <form action="newuserregister" method="post">
             <div class="form-group">
-                <label for="firstName">User Name</label>
-                <input type="text" name="username" id="firstName" required placeholder="Your Username*" required class="form-control form-control-lg">
+                <label for="firstName">Username</label>
+                <input type="text" name="username" id="firstName" required placeholder="Username*" required class="form-control form-control-lg">
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>
@@ -35,14 +35,14 @@
                 <input type="password" class="form-control form-control-lg" required placeholder="Password*" required name="password"
                        id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%\^&*()\-_=+[\]{};:\x27.,\x22\\|/?><]).{8,}" title="Must contain: 
                        at least one number, one uppercase letter, one lowercase letter, one special character, and 8 or more characters" required>
-                <input type="checkbox" onclick="showPassword()">Show Password
+                <input type="checkbox" onclick="showPassword()"> Show Password
 
             </div>
             <div class="form-group">
                 <label for="Address">Address</label>
                 <textarea class="form-control form-control-lg" rows="3" placeholder="Enter Your Address" name="address"></textarea>
             </div>
-<span style="margin-top: 10px">Already have an account <a class="linkControl" href="index">Login here</a></span> <br><br>
+<span style="margin-top: 10px">Already have an account ?<a class="linkControl" href="index">Login here</a></span> <br><br>
             <input type="submit" value="Register" class="btn btn-primary btn-block"><br>
             
         </form>

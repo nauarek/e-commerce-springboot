@@ -42,7 +42,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			ResultSet rst = stmt.executeQuery("select * from users where username = '"+username+"' and password = '"+ pass+"' ;");
 			if(rst.next()) {
@@ -105,7 +105,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			
 			PreparedStatement pst = con.prepareStatement("insert into categories(name) values(?);");
@@ -126,7 +126,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			
 			PreparedStatement pst = con.prepareStatement("delete from categories where categoryid = ? ;");
@@ -147,7 +147,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			
 			PreparedStatement pst = con.prepareStatement("update categories set name = ? where categoryid = ?");
@@ -179,7 +179,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			Statement stmt2 = con.createStatement();
 			ResultSet rst = stmt.executeQuery("select * from products where id = "+id+";");
@@ -221,7 +221,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			
 			PreparedStatement pst = con.prepareStatement("update products set name= ?,image = ?,quantity = ?, price = ?, weight = ?,description = ? where id = ?;");
 			pst.setString(1, name);
@@ -246,7 +246,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			
 			
 			PreparedStatement pst = con.prepareStatement("delete from products where id = ? ;");
@@ -270,7 +270,7 @@ public class AdminController {
 		
 		try
 		{
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from categories where name = '"+catid+"';");
 			if(rs.next())
@@ -307,7 +307,7 @@ public class AdminController {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			Statement stmt = con.createStatement();
 			ResultSet rst = stmt.executeQuery("select * from users where username = '"+usernameforclass+"';");
 			
@@ -315,8 +315,8 @@ public class AdminController {
 			{
 			int userid = rst.getInt(1);
 			displayusername = rst.getString(2);
-			displayemail = rst.getString(3);
-			displaypassword = rst.getString(4);
+			displayemail = rst.getString(6);
+			displaypassword = rst.getString(3);
 			displayaddress = rst.getString(5);
 			model.addAttribute("userid",userid);
 			model.addAttribute("username",displayusername);
@@ -329,25 +329,23 @@ public class AdminController {
 		{
 			System.out.println("Exception:"+e);
 		}
-		System.out.println("Hello");
 		return "updateProfile";
 	}
 	
 	@RequestMapping(value = "updateuser",method=RequestMethod.POST)
-	public String updateUserProfile(@RequestParam("userid") int userid,@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("address") String address) 
-	
+	public String updateUserProfile(@RequestParam("userid") int userid, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("address") String address)
 	{
+		System.out.println(userid);
 		try
 		{
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
-			
-			PreparedStatement pst = con.prepareStatement("update users set username= ?,email = ?,password= ?, address= ? where uid = ?;");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
+			PreparedStatement pst = con.prepareStatement("update users set username= ?,email = ?,password= ?, address= ? where user_id = '" + userid +"'");
+//			pst.setInt(1, userid);
 			pst.setString(1, username);
 			pst.setString(2, email);
 			pst.setString(3, password);
 			pst.setString(4, address);
-			pst.setInt(5, userid);
 			int i = pst.executeUpdate();	
 			usernameforclass = username;
 		}

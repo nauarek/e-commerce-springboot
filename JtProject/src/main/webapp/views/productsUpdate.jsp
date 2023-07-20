@@ -34,7 +34,7 @@
 				<ul class="navbar-nav mr-auto"></ul>
 				<ul class="navbar-nav">
 					<li class="nav-item active"><a class="nav-link"
-						href="/adminhome" >Home Page</a></li>
+						href="/adminhome" >Home</a></li>
 					<li class="nav-item active"><a class="nav-link"
 						href="/logout" >Logout</a></li>
 
@@ -91,18 +91,12 @@
 					</div>
 					<p>Product Image</p>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" name="productImage" value="${ pimage }" accept="image/jpeg, image/png" id="productImage"  onchange="loadfile(event)"/> 
-						<label class="custom-file-label border border-success" for="productImage">Choose file</label>
-						<script type="text/javascript">
-						var loadFile = function(event) {
-							var image = document.getElementById('imgPreview');
-							image.src = URL.createObjectURL(event.target.files[0]);
-						};
-						</script>
+						<input type="file" class="custom-file-input" name="productImage" accept="image/jpeg, image/png" id="productImage" onchange="loadFile(event)" />
+						<label class="custom-file-label border border-warning" for="productImage">Choose file</label>
 					</div>
 					<div class="form-group">
-						<img src="#" id="imgPreview" height="100px" width="100px"
-							style="margin-top: 20px" alt=" ">
+						<img src="" id="imgPreview" hidden height="100px" width="100px"
+							style="margin-top: 20px">
 					</div>
 					<input type="hidden" name="imgName">
 					<input type="submit" value="Update Details" class="btn btn-primary">
@@ -122,5 +116,12 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		var loadFile = function(event) {
+			var image = document.getElementById('imgPreview');
+			image.hidden = !image.hidden;
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+	</script>
 </body>
 </html>

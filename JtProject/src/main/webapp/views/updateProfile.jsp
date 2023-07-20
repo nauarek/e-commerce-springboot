@@ -20,7 +20,7 @@
         <br>
         <form action="updateuser" method="post">
             <div class="form-group">
-                <label for="firstName">User Name</label>
+                <label for="firstName">Username</label>
                 <input type="hidden" name="userid" value="${userid }">
                 <input type="text" name="username" id="firstName" required placeholder="Your Username*" value="${username }" required class="form-control form-control-lg">
             </div>

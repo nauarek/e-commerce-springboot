@@ -34,7 +34,7 @@
 				<ul class="navbar-nav mr-auto"></ul>
 				<ul class="navbar-nav">
 					<li class="nav-item active"><a class="nav-link"
-						href="/adminhome" >Home Page</a></li>
+						href="/adminhome" >Home</a></li>
 					<li class="nav-item active"><a class="nav-link"
 						href="/logout" >Logout</a></li>
 
@@ -52,7 +52,7 @@
 					try {
 						String url = "jdbc:mysql://localhost:3306/springproject";
 						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection con = DriverManager.getConnection(url, "root", "Swisschoc2@");
+						Connection con = DriverManager.getConnection(url, "root", "12345678");
 						Statement stmt = con.createStatement();
 						ResultSet rs = stmt.executeQuery("select * from products order by id desc");
 					%>
@@ -117,15 +117,15 @@
 					</div>
 					<p>Product Image</p>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" name="productImage" accept="image/jpeg, image/png" id="productImage" onchange="loadfile(event)" /> 
+						<input type="file" class="custom-file-input" name="productImage" accept="image/jpeg, image/png" id="productImage" onchange="loadFile(event)" />
 						<label class="custom-file-label border border-warning" for="productImage">Choose file</label>
-						
 					</div>
 					<div class="form-group">
-						<img src="Product Images/one.jpg" alt="Hello" id="imgPreview" height="100px" width="100px"
-							style="margin-top: 20px" >
+						<img src="" hidden id="imgPreview" height="100px" width="100px"
+							 style="margin-top: 20px" >
 					</div>
 					<input type="hidden" name="imgName">
+					<p> </p>
 					<input type="submit" class="btn btn-primary">
 				</div>
 			</div>
@@ -146,6 +146,7 @@
 		<script type="text/javascript">
 						var loadFile = function(event) {
 							var image = document.getElementById('imgPreview');
+							image.hidden = !image.hidden;
 							image.src = URL.createObjectURL(event.target.files[0]);
 						};
 						</script>

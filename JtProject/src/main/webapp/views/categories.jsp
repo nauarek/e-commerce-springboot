@@ -33,8 +33,7 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto"></ul>
 				<ul class="navbar-nav">
-					<li class="nav-item active"><a class="nav-link" href="/adminhome">Home
-							Page</a></li>
+					<li class="nav-item active"><a class="nav-link" href="/adminhome">Home</a></li>
 					<li class="nav-item active"><a class="nav-link" href="/logout">Logout</a>
 					</li>
 
@@ -99,7 +98,7 @@
 
 					String url = "jdbc:mysql://localhost:3306/springproject";
 					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection con = DriverManager.getConnection(url, "root", "Swisschoc2@");
+					Connection con = DriverManager.getConnection(url, "root", "12345678");
 					Statement stmt = con.createStatement();
 					ResultSet rs = stmt.executeQuery("select * from categories");
 				%>
