@@ -1,4 +1,4 @@
-# E-commerce Website - Java Springboot
+# E-commerce Website - Java Spring Boot
 
 ## How To Run ?
 
