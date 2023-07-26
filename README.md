@@ -30,7 +30,7 @@
 
 
 
-** If you encounter an error while running the java file, go to "Edit configuration" top right and change the working directory to: $MODULE_WORKING_DIR$ then reload project from pom.xml and run it again **
+** If you encounter an error while running the java file, go to "Edit configuration" top right and change the working directory to: ```$MODULE_WORKING_DIR$``` then reload project from pom.xml and run it again **
 
 
 ## Log in 
@@ -39,6 +39,6 @@ Admin module (http://localhost:8080/admin)
 -  Password: 123
 
   User module (http://localhost:8080)
--  user name: jay 
+-  user name: gaissa
 -  password: 123
 
