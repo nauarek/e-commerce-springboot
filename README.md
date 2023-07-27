@@ -8,7 +8,7 @@
 - Run mysql server
 
 
-- Create database wait the name: springproject
+- Create the database and name it: ```springproject```
 
 
 - Run the sql file in the project to add tables automatically (if you can't run it, do it manually through sql ide or terminal)
@@ -30,7 +30,7 @@
 
 
 
-** If you encounter an error while running the java file, go to "Edit configuration" top right and change the working directory to: $MODULE_WORKING_DIR$ then reload project from pom.xml and run it again **
+** If you encounter an error while running the java file, go to "Edit configuration" top right and change the working directory to: ```$MODULE_WORKING_DIR$``` then reload project from pom.xml and run it again **
 
 
 ## Log in 
@@ -39,6 +39,6 @@ Admin module (http://localhost:8080/admin)
 -  Password: 123
 
   User module (http://localhost:8080)
--  user name: jay 
+-  user name: jay
 -  password: 123
 
