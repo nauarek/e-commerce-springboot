@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,21 +35,70 @@ public class UserController{
 	public String getproduct(Model model) {
 		return "uproduct";
 	}
+
+	// ...
+
+	@ResponseBody
+	@GetMapping("/checkUsernameAvailability")
+	public Map<String, Boolean> checkUsernameAvailability(@RequestParam("username") String username) {
+		Map<String, Boolean> response = new HashMap<>();
+		try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject", "root", "12345678");
+			PreparedStatement pst = con.prepareStatement("SELECT COUNT(*) FROM users WHERE username = ?");
+			pst.setString(1, username);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				response.put("exists", count > 0);
+			} else {
+				response.put("exists", false);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception:" + e);
+			response.put("exists", false);
+		}
+		return response;
+	}
+
+	@ResponseBody
+	@GetMapping("/checkEmailAvailability")
+	public Map<String, Boolean> checkEmailAvailability(@RequestParam("email") String email) {
+		Map<String, Boolean> response = new HashMap<>();
+		try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject", "root", "12345678");
+			PreparedStatement pst = con.prepareStatement("SELECT COUNT(*) FROM users WHERE email = ?");
+			pst.setString(1, email);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				response.put("exists", count > 0);
+			} else {
+				response.put("exists", false);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception:" + e);
+			response.put("exists", false);
+		}
+		return response;
+	}
+
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
-	public String newUseRegister(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("email") String email)
+	public String newUseRegister(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("email") String email, @RequestParam("address") String address)
 	{
 		try
 		{
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
-			PreparedStatement pst = con.prepareStatement("insert into users(username,password,email) values(?,?,?);");
+			PreparedStatement pst = con.prepareStatement("insert into users(username,password,email,address) values(?,?,?,?);");
 			pst.setString(1,username);
 			pst.setString(2, password);
 			pst.setString(3, email);
-			
+			pst.setString(4, address);
 
 			//pst.setString(4, address);
 			int i = pst.executeUpdate();
 			System.out.println("data base updated"+i);
+
+
 			
 		}
 		catch(Exception e)

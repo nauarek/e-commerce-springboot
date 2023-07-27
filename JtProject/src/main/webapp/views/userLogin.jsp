@@ -150,6 +150,17 @@
             font-size: 17px;
         }
 
+        #submitBtn[disabled],
+        #submitBtn[disabled]:hover {
+            background-color: #E74B3C;
+            color: #fff;
+            cursor: default;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
     </style>
 </head>
 <body>
@@ -166,7 +177,7 @@
             <div class="form-group">
                 <input type="password" class="form-control form-control-lg" placeholder="Password" required name="password" id="password">
             </div>
-            <p class="error-message">${message}</p>
+            <p class="error-message">${failMessage}</p>
             <button type="submit" class="btn btn-login">Log in</button><br><br>
             <span>Don't have an account? <a class="linkControl" href="#" data-toggle="modal" data-target="#registrationModal">Register here</a></span>
         </form>
@@ -183,15 +194,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="newuserregister" method="post" class="registration-form">
-                        <div class="form-group">
-                            <label for="firstName" style="display: block; width: 100%; text-align: left;">Username</label>
-                            <input type="text" name="username" id="firstName" required required class="form-control form-control-lg">
-                        </div>
+                    <form action="newuserregister" method="post" class="registration-form" id="registrationForm">
                         <div class="form-group">
                             <label for="email" style="display: block; width: 100%; text-align: left;">Email address</label>
-                            <input type="email" class="form-control form-control-lg" required minlength="6"  required name="email" id="email"
-                                   aria-describedby="emailHelp">
+                            <input type="email" class="form-control form-control-lg" required minlength="6" required name="email" id="email"
+                                   aria-describedby="emailHelp" oninput="validateEmail()">
+                            <div class="text-left"><span id="emailError" class="error-message"></span></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName" style="display: block; width: 100%; text-align: left;">Username</label>
+                            <input type="text" name="username" id="firstName" required class="form-control form-control-lg" oninput="validateUsername()">
+                            <div class="text-left"><span id="usernameError" class="error-message"></span></div>
                         </div>
                         <div class="form-group">
                             <label for="passwordd" style="display: block; width: 100%; text-align: left;">Password</label>
@@ -203,14 +216,14 @@
                             <label for="address" style="display: block; width: 100%; text-align: left;">Address</label>
                             <input class="form-control form-control-lg" rows="3" id="address" placeholder="Optional" name="address"></input>
                         </div>
-                        <input type="submit" value="Register" class="btn btn-danger btn-block"><br>
+                        <input id="submitBtn" type="submit" disabled value="Register" class="btn btn-danger btn-block"><br>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script>
     function toggleRegistrationForm() {
@@ -233,6 +246,119 @@
             x.type = "password";
         }
     }
+    function checkUsernameAvailability(username) {
+        return $.ajax({
+            type: "GET",
+            url: "/checkUsernameAvailability",
+            data: { username: username },
+        });
+    }
+
+    function checkEmailAvailability(email) {
+        return $.ajax({
+            type: "GET",
+            url: "/checkEmailAvailability",
+            data: { email: email },
+        });
+    }
+
+    function updateSubmitButtonState() {
+        var username = document.getElementById("firstName").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("passwordd").value;
+        var isValid = true;
+
+        if (!username) {
+            isValid = false;
+        }
+
+        if (!email) {
+            isValid = false;
+        } else {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                isValid = false;
+                document.getElementById("emailError").textContent = "Invalid email format";
+            }
+        }
+
+        if (!password) {
+            isValid = false;
+        }
+
+        var usernameErrorElement = document.getElementById("usernameError");
+        var emailErrorElement = document.getElementById("emailError");
+        if (usernameErrorElement.textContent || emailErrorElement.textContent) {
+            isValid = false;
+        }
+
+        var submitButton = document.getElementById("submitBtn");
+        submitButton.disabled = !isValid;
+    }
+
+    document.getElementById("firstName").addEventListener("input", function () {
+        var username = this.value;
+        if (username) {
+            checkUsernameAvailability(username)
+                .then(function (response) {
+                    var errorElement = document.getElementById("usernameError");
+                    if (response.exists) {
+                        errorElement.textContent = "Username already exists";
+                        updateSubmitButtonState();
+                    } else {
+                        errorElement.textContent = "";
+                        var emailErrorElement = document.getElementById("emailError");
+                        if (!emailErrorElement.textContent) {
+                            updateSubmitButtonState();
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error checking username availability:", error);
+                });
+        } else {
+            document.getElementById("usernameError").textContent = "";
+            updateSubmitButtonState();
+        }
+    });
+
+    document.getElementById("email").addEventListener("input", function () {
+        var email = this.value;
+        if (email) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById("emailError").textContent = "Invalid email format";
+                updateSubmitButtonState();
+                return;
+            }
+
+            checkEmailAvailability(email)
+                .then(function (response) {
+                    var errorElement = document.getElementById("emailError");
+                    if (response.exists) {
+                        errorElement.textContent = "Email already exists";
+                        updateSubmitButtonState();
+                    } else {
+                        errorElement.textContent = "";
+                        var usernameErrorElement = document.getElementById("usernameError");
+                        if (!usernameErrorElement.textContent) {
+                            updateSubmitButtonState();
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error checking email availability:", error);
+                });
+        } else {
+            document.getElementById("emailError").textContent = "";
+            updateSubmitButtonState();
+        }
+    });
+
+    document.getElementById("passwordd").addEventListener("input", function () {
+        updateSubmitButtonState();
+    });
+
 </script>
 </body>
 </html>
