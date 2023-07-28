@@ -28,10 +28,6 @@ public class UserController{
 		return "customcart";
 	}
 
-
-
-
-
 	@GetMapping("/register")
 	public String registerUser()
 	{
@@ -114,8 +110,6 @@ public class UserController{
 			//pst.setString(4, address);
 			int i = pst.executeUpdate();
 			System.out.println("data base updated"+i);
-
-
 			
 		}
 		catch(Exception e)
@@ -125,13 +119,18 @@ public class UserController{
 		return "redirect:/";
 	}
 	@GetMapping("clearcart")
-	public String clearcart(Model model) {
+	public String clearcart() {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
 			Statement stmt = con.createStatement();
-			ResultSet rst = stmt.executeQuery("delete from Cart where userID = (select user_id from users where username = '" + username + "';");
+			ResultSet rst = stmt.executeQuery("delete from Cart where userID = (select user_id from users where username = '" + username + "');");
+
+			if (rst.next()) {
+				int userID = rst.getInt("user_id");
+				stmt.executeUpdate("DELETE FROM Cart WHERE userID = " + userID + ";");
+			}
 
 		}
 		catch(Exception e)
@@ -140,4 +139,46 @@ public class UserController{
 		}
 		return "cart";
 	}
+
+
+
+	@GetMapping("moveCustomToCart")
+	public String moveCustomToCart(Model model) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject", "root", "Swisschoc2@");
+			Statement stmt = con.createStatement();
+
+			// Fetch existing items and quantities from Cart
+			Map<String, Integer> cartItems = new HashMap<>();
+			ResultSet cartRs = stmt.executeQuery("SELECT productID, quantity FROM Cart WHERE userID = (SELECT user_id FROM users WHERE username = '" + username + "');");
+			while (cartRs.next()) {
+				String productID = cartRs.getString("productID");
+				int quantity = cartRs.getInt("quantity");
+				cartItems.put(productID, quantity);
+			}
+
+			// Fetch items and quantities from CustomCart
+			ResultSet customCartRs = stmt.executeQuery("SELECT productID, quantity FROM CustomCart WHERE username = '" + username + "';");
+			while (customCartRs.next()) {
+				String productID = customCartRs.getString("productID");
+				int quantity = customCartRs.getInt("quantity");
+
+				// Check if the product is already in the cart
+				if (cartItems.containsKey(productID)) {
+					int currentQuantity = cartItems.get(productID);
+					int newQuantity = currentQuantity + quantity;
+					// Update the quantity in the Cart table
+					stmt.executeUpdate("UPDATE Cart SET quantity = " + newQuantity + " WHERE userID = (SELECT user_id FROM users WHERE username = '" + username + "') AND productID = '" + productID + "';");
+				} else {
+					stmt.executeUpdate("INSERT INTO Cart (userID, productID, quantity) VALUES ((SELECT user_id FROM users WHERE username = '" + username + "'), NULL, '" + productID + "', " + quantity + ");");
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Exception:" + e);
+		}
+		return "cart";
+	}
+
 }
