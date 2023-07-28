@@ -14,6 +14,23 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController{
+	static String username = "";
+
+	public static void setUsername(String username) {
+		UserController.username = username;
+	}
+	@GetMapping("/cart")
+	public String cart(){
+		return "cart";
+	}
+	@GetMapping("/customcart")
+	public String customCart(){
+		return "customcart";
+	}
+
+
+
+
 
 	@GetMapping("/register")
 	public String registerUser()
@@ -106,5 +123,21 @@ public class UserController{
 			System.out.println("Exception:"+e);
 		}
 		return "redirect:/";
+	}
+	@GetMapping("clearcart")
+	public String clearcart(Model model) {
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","Swisschoc2@");
+			Statement stmt = con.createStatement();
+			ResultSet rst = stmt.executeQuery("delete from Cart where userID = (select user_id from users where username = '" + username + "';");
+
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception:"+e);
+		}
+		return "cart";
 	}
 }

@@ -27,6 +27,7 @@ public class AdminController {
 			return "userLogin";
 		else {
 			model.addAttribute("username", usernameforclass);
+			UserController.setUsername(usernameforclass);
 			return "index";
 		}
 			
