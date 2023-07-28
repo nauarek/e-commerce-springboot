@@ -2,6 +2,7 @@ package com.jtspringproject.JtSpringProject.controller;
 
 import java.sql.*;
 
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class AdminController {
 	public String returnIndex() {
 		adminlogcheck =0;
 		usernameforclass = "";
+		UserController.setUsername("");
 		return "userLogin";
 	}
 	
