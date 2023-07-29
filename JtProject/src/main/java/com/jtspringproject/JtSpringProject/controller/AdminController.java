@@ -1,13 +1,9 @@
 package com.jtspringproject.JtSpringProject.controller;
 
 import java.sql.*;
-
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import com.mysql.cj.protocol.Resultset;
 
 @Controller
 public class AdminController {
@@ -344,7 +340,6 @@ public class AdminController {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/springproject","root","12345678");
 			PreparedStatement pst = con.prepareStatement("update users set username= ?,email = ?,password= ?, address= ? where user_id = '" + userid +"'");
-//			pst.setInt(1, userid);
 			pst.setString(1, username);
 			pst.setString(2, email);
 			pst.setString(3, password);
@@ -357,6 +352,11 @@ public class AdminController {
 			System.out.println("Exception:"+e);
 		}
 		return "redirect:/index";
+	}
+
+	@GetMapping("/cart")
+	public String viewCart(Model model) {
+		return "cart";
 	}
 
 }

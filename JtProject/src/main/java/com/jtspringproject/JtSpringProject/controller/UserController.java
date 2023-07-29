@@ -19,10 +19,8 @@ public class UserController{
 	public static void setUsername(String username) {
 		UserController.username = username;
 	}
-	@GetMapping("/cart")
-	public String cart(){
-		return "cart";
-	}
+
+
 	@GetMapping("/customcart")
 	public String customCart(){
 		return "customcart";

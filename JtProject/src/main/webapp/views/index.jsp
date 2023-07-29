@@ -66,16 +66,11 @@
             color: white;
         }
 
-
-        .search-section {
-            background-color: #fff;
-            padding: 40px 0;
-        }
-
-        .search-box {
+        .search-container {
             max-width: 500px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
         }
 
         .search-input {
@@ -85,6 +80,35 @@
             border-radius: 30px;
             font-size: 16px;
             outline: none;
+        }
+
+        #searchResults {
+            position: absolute;
+            z-index: 1;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            list-style: none;
+            padding-left: 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #searchResults li {
+            padding: 8px;
+            cursor: pointer;
+            color: #292929;
+        }
+
+        #searchResults li:hover {
+            background-color: #f2f2f2;
+        }
+
+        #viewAllBtn {
+            display: none;
         }
 
         .search-btn {
@@ -196,28 +220,21 @@
                 <div class="col-md-12">
                     <h1 class="hero-text">Food Ecommerce Simplified</h1>
                     <p class="hero-subtext">Discover a bounty of fresh fruits and vegetables, premium meats, flavorful seasonings, and more.</p>
-                    <div class="search-box">
+                    <div class="search-container">
                         <input type="text" class="search-input" placeholder="Search products..." id="searchInput">
-                        <div class="search-results" id="searchResults"></div> <br> <br>
-                        <a class="search-btn" href="#" id="findProductBtn">Find product</a>
+                        <ul style="color: #292929" id="searchResults"></ul>
+                        <a class="search-btn" href="#" id="viewAllBtn">View all results</a>
+                        <br><br><br><br><br>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
-<section class="search-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="restaurant-section">
     <div class="container">
+        <br>
         <div class="row">
             <div class="col-md-4">
                 <div class="restaurant-item">
@@ -253,6 +270,84 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
 
+    searchInput.addEventListener('input', handleSearch);
+
+    function handleSearch() {
+        const query = searchInput.value.trim();
+
+        if (query !== '') {
+            const sampleResults = [
+                'Apple',
+                'Banana',
+                'Cherry',
+                'Grapes',
+                'Orange',
+                'Pineapple',
+                'Strawberry'
+            ];
+
+            const filteredResults = sampleResults.filter(result => result.toLowerCase().includes(query.toLowerCase()));
+
+            displaySearchResults(filteredResults);
+        } else {
+            searchResults.style.display = 'none';
+        }
+    }
+
+    function displaySearchResults(results) {
+        searchResults.innerHTML = ''; // Clear previous results
+
+        if (results.length > 0) {
+            for (let i = 0; i < Math.min(results.length, 3); i++) {
+                const li = document.createElement('li');
+                li.textContent = results[i];
+                searchResults.appendChild(li);
+            }
+            if (results.length > 3) {
+                const viewAllLi = document.createElement('li');
+                viewAllLi.textContent = 'View all results';
+                viewAllLi.addEventListener('click', () => {
+                    // Add your logic for handling the form submission here
+                    // For example, you can redirect to a search results page or handle it via AJAX.
+                    console.log('View all results clicked.');
+                });
+                searchResults.appendChild(viewAllLi);
+            }
+            searchResults.style.display = 'block';
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No results found.';
+            searchResults.appendChild(li);
+            searchResults.style.display = 'block';
+        }
+    }
+
+    searchResults.addEventListener('click', function (event) {
+        if (event.target.tagName === 'LI') {
+            searchInput.value = event.target.textContent;
+            searchResults.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        const target = event.target;
+        if (!target.matches('.search-input') && !target.matches('#searchResults li')) {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    searchInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const query = searchInput.value.trim();
+            // Add your logic for handling the search here
+            // For example, you can redirect to a search results page or handle it via AJAX.
+        }
+    });
+</script>
 </body>
 </html>
